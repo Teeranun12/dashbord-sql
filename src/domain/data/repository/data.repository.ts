@@ -3,10 +3,8 @@ import client from "../../../config/datasource";
 export class DataRepository {
   async gatDataByRepo(repo: string) {
     const result = await client.query(
-      `SELECT * FROM ${repo.toString()} LIMIT 200;`
+      `SELECT * FROM ${repo.toString()} LIMIT 20;`
     );
-
-    console.log("data = ", result);
 
     return result.rows;
   }
@@ -15,8 +13,6 @@ export class DataRepository {
     const result = await client.query(
       `SELECT table_name , column_name , data_type FROM information_schema.columns WHERE table_schema = 'public' order by table_name desc;`
     );
-
-    console.log("data = ", result);
 
     return result.rows;
   }
