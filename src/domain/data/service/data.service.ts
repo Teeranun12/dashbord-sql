@@ -8,10 +8,10 @@ export class Domain1Service {
   }
 
   async getDataByRepo(repo: string) {
-    return this.databaseRepo.gatDataByRepo(repo);
+    return this.databaseRepo.getDataByRepo(repo);
   }
 
   async getDataBase() {
-    return this.databaseRepo.gatAllData();
+    return this.databaseRepo.getAllData();
   }
 }

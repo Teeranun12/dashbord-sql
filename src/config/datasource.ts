@@ -12,22 +12,19 @@ if (
   throw new Error("Database configuration is missing in environment variables");
 }
 
-const client = new Pool({
+const pool = new Pool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT) || 5432,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  idleTimeoutMillis: 0,
-  connectionTimeoutMillis: 0,
-
+  idleTimeoutMillis: 60000,
+  connectionTimeoutMillis: 5000,
 });
 
-const currentTime = new Date().toLocaleString();
-
-client.on('error', (err) => {
-  console.error( currentTime , 'Unexpected error on idle client', err);
+pool.on('error', (err) => {
+  console.error( 'Unexpected error on idle pool', err);
   process.exit(-1);
 });
 
-export default client;
+export default pool;

@@ -1,19 +1,17 @@
-import client from "../../../config/datasource";
+import { queryDatabase } from "../../../util/helper/dbhelper";
 
 export class DataRepository {
-  async gatDataByRepo(repo: string) {
-    const result = await client.query(
-      `SELECT * FROM ${repo.toString()} LIMIT 20;`
-    );
-
-    return result.rows;
+  async getDataByRepo(repo: string) {
+    const queryText = `SELECT * FROM ${repo} LIMIT 20;`;
+    return await queryDatabase(queryText);
   }
 
-  async gatAllData() {
-    const result = await client.query(
-      `SELECT table_name , column_name , data_type FROM information_schema.columns WHERE table_schema = 'public' order by table_name desc;`
-    );
-
-    return result.rows;
+  async getAllData() {
+    const queryText = `
+      SELECT table_name, column_name, data_type 
+      FROM information_schema.columns 
+      WHERE table_schema = 'public' 
+      ORDER BY table_name DESC;`;
+    return await queryDatabase(queryText);
   }
 }
