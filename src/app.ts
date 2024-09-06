@@ -12,7 +12,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/data", data);
+const currentTime = new Date().toLocaleString();
 
 app.listen(port, () => {
+  console.log('currentTime = ', currentTime);
+
   return console.log(`Express is listening at http://localhost:${port}`);
 });
