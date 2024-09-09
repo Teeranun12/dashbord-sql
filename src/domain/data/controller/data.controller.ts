@@ -24,4 +24,18 @@ router.get("/:repo", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/export/:repo", async (req: Request, res: Response) => {
+  try {
+    const fileName = `${req.params.repo}-${new Date().getTime()}`;
+    const data = await domain1Service.ExportDataTable(req.params.repo, fileName);
+
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}.xlsx`);
+    res.send(data);
+
+  } catch (err) {
+    console.error("Database error = ", err);
+    res.status(500).send("Database error");
+  }
+});
+
 export default router;
