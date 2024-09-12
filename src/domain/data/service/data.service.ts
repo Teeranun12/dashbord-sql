@@ -1,4 +1,5 @@
 import { validateExportFile } from "../../../util/helper/file.helper";
+import { paginate } from "../../../util/helper/pagination";
 import { DataResponse } from "../model/data.reponse";
 import { DataRepository } from "../repository/data.repository";
 import * as xlsx from 'xlsx';
@@ -31,7 +32,7 @@ export class Domain1Service {
       }
     >();
     const tableNames = new Set<string>();
-    const reponse: DataResponse[] = [];
+    const mapData: DataResponse[] = [];
 
     for (const data of getData) {
       const tableName = data["table_name"].toString();
@@ -63,7 +64,7 @@ export class Domain1Service {
 
     tableNames.forEach((tableName) => {
       const exsistingTableName = dataMap.get(tableName);
-      reponse.push({
+      mapData.push({
         table_name: tableName,
         fields: exsistingTableName.fields.map((field) => {
           return {
@@ -75,12 +76,14 @@ export class Domain1Service {
       });
     });
 
-    return reponse;
+    const response = paginate(mapData, 1, 20);
+
+    return response;
   }
 
   async ExportDataTable(table: string , fileName: string) {
     const headerData = await this.databaseRepo.getBaseByTable(table);
-    const data = await this.databaseRepo.getDataByRepo(table);
+    const data = await this.databaseRepo.getDataByRepo(table , 'export');
     
     let headers = {};
 
