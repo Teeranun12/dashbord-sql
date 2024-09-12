@@ -2,15 +2,15 @@ import { queryDatabase } from "./../../../util/helper/dbhelper";
 import { paginate } from "../../../util/helper/pagination";
 
 export class DataRepository {
-  async getDataByRepo(repo: string, query?: string) {
+  async getDataByRepo(repo: string, page?: number , recordPerPage?: number) {
     const queryText = `SELECT * FROM ${repo} ORDER BY id DESC`;
     const data = await queryDatabase(queryText);
 
-    if (query === "export") {
-      return data;
+    if (page && recordPerPage) {
+      const result = paginate(data, page, recordPerPage);
+      return result;
     }
-    const result = paginate(data, 1, 20);
-    return result;
+    return data;
   }
 
   async getAllData() {

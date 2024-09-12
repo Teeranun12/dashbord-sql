@@ -11,8 +11,8 @@ export class Domain1Service {
     this.databaseRepo = new DataRepository();
   }
 
-  async getDataByRepo(repo: string) {
-    const response = await this.databaseRepo.getDataByRepo(repo);
+  async getDataByRepo(repo: string , page?: number , recordPerPage?: number) {
+    const response = await this.databaseRepo.getDataByRepo(repo , page , recordPerPage);
 
     return response;
   }
@@ -83,7 +83,7 @@ export class Domain1Service {
 
   async ExportDataTable(table: string , fileName: string) {
     const headerData = await this.databaseRepo.getBaseByTable(table);
-    const data = await this.databaseRepo.getDataByRepo(table , 'export');
+    const data = await this.databaseRepo.getDataByRepo(table);
     
     let headers = {};
 

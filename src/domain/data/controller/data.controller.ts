@@ -16,7 +16,24 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.get("/:repo", async (req: Request, res: Response) => {
   try {
-    const data = await domain1Service.getDataByRepo(req.params.repo);
+    const repo = req.params.repo;
+    const { page, recordPerPage } = req.query;
+
+    let data;
+
+    if (page && recordPerPage) {
+      const pageNumber = parseInt(page as string, 10);
+      const recordsPerPage = parseInt(recordPerPage as string, 10);
+
+      data = await domain1Service.getDataByRepo(
+        repo,
+        pageNumber,
+        recordsPerPage
+      );
+    } else {
+      data = await domain1Service.getDataByRepo(repo);
+    }
+    
     res.send(data);
   } catch (err) {
     console.error("Database error = ", err);
@@ -27,11 +44,16 @@ router.get("/:repo", async (req: Request, res: Response) => {
 router.get("/export/:repo", async (req: Request, res: Response) => {
   try {
     const fileName = `${req.params.repo}-${new Date().getTime()}`;
-    const data = await domain1Service.ExportDataTable(req.params.repo, fileName);
+    const data = await domain1Service.ExportDataTable(
+      req.params.repo,
+      fileName
+    );
 
-    res.setHeader('Content-Disposition', `attachment; filename=${fileName}.xlsx`);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${fileName}.xlsx`
+    );
     res.send(data);
-
   } catch (err) {
     console.error("Database error = ", err);
     res.status(500).send("Database error");
