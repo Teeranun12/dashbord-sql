@@ -1,0 +1,12 @@
+{
+  "entryFile": "src/app.ts",
+  "noImplicitAdditionalProperties": "throw",
+  "controllerPathGlobs": ["src/domain/**/controller/*.ts"],
+  "spec": {
+    "outputDirectory": "dist",
+    "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "src/domain/"
+  }
+}

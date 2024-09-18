@@ -23,6 +23,7 @@ export class DataRepository {
     return await queryDatabase(queryText);
   }
 
+
   async getBaseByTable(table: string) {
     const queryText = `
       SELECT table_name, column_name, data_type 

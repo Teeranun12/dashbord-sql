@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { Domain1Service } from "../service/data.service";
 
+
 const router = express.Router();
 const domain1Service = new Domain1Service();
 
